@@ -1,0 +1,4 @@
+--class-path src
+--js bin/main.js
+--no-output
+--library lime

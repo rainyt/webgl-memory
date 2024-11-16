@@ -1,0 +1,3 @@
+<project>
+    <dependency path="./lib/webgl-memory.js" />
+</project>
