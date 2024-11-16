@@ -16,7 +16,7 @@ class WebGLMemory {
 			// var textures = ext.getResourcesInfo(Texture);
 			// every buffer, it's size, a stack of where it was created and a stack of where it was last updated.
 			// var buffers = ext.getResourcesInfo(Buffer);
-			// trace(info, textures, buffers);
+			// trace(textures, buffers);
 		}
 		return null;
 	}
