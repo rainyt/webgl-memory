@@ -37,7 +37,7 @@ class GPUMemory {
 		bitmapDatas = bitmapDatas.filter(ref -> #if cpp ref.get() #else ref.deref() #end != null);
 		for (ref in bitmapDatas) {
 			var bitmapData:BitmapData = #if cpp ref.get() #else ref.deref() #end;
-			if (bitmapData != null) {
+			if (bitmapData != null && @:privateAccess bitmapData.__texture != null) {
 				size += bitmapData.width * bitmapData.height * 4;
 			}
 		}
