@@ -10,7 +10,7 @@ import cpp.vm.WeakRef;
 
 /**
  * 适用于OpenLF的GPU内存统计
- * GPU Memory Statistics for OpenLF
+ * GPU Memory Statistics for OpenFL
  */
 class GPUMemory {
 	/**
