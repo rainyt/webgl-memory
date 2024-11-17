@@ -16,7 +16,7 @@ class GPUMemory {
 	 * 位图引用关系
 	 * Bitmap reference relationship
 	 */
-	public static var bitmapDatas:Array<WeakRef<BitmapData>>;
+	public static var bitmapDatas:Array<WeakRef<BitmapData>> = []; 
 
 	/**
 	 * GPU内存缓存记录大小
