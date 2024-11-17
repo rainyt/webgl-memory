@@ -1,0 +1,6 @@
+--class-path src
+--cpp bin/cpp
+--main Test
+--no-output
+--library lime
+--library openfl

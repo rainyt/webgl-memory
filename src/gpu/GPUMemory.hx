@@ -4,6 +4,7 @@ import openfl.display.BitmapData;
 #if js
 import js.lib.WeakRef;
 #elseif cpp
+import cpp.vm.WeakRef;
 #end
 
 /**
@@ -30,7 +31,7 @@ class GPUMemory {
 	public static function getGPUMemorySize():Int {
 		var size:Int = 0;
 		for (ref in bitmapDatas) {
-			var bitmapData:BitmapData = ref.deref();
+			var bitmapData:BitmapData = #if cpp ref.get() #else ref.deref() #end;
 			if (bitmapData != null) {
 				size += bitmapData.width * bitmapData.height * 4;
 			}
