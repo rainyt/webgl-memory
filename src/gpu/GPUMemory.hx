@@ -1,5 +1,6 @@
 package gpu;
 
+import haxe.Timer;
 import openfl.display.BitmapData;
 #if js
 import js.lib.WeakRef;
@@ -16,12 +17,14 @@ class GPUMemory {
 	 * 位图引用关系
 	 * Bitmap reference relationship
 	 */
-	public static var bitmapDatas:Array<WeakRef<BitmapData>> = []; 
+	public static var bitmapDatas:Array<WeakRef<BitmapData>> = [];
 
 	/**
 	 * GPU内存缓存记录大小
 	 */
 	private static var __gpuMemorySize:Int = 0;
+
+	private static var __changeTime:Float = 0;
 
 	/**
 	 * 观察位图引用关系
@@ -39,6 +42,11 @@ class GPUMemory {
 	 * @return Int
 	 */
 	public static function getGPUMemorySize():Int {
+		var now = Timer.stamp();
+		if (now - __changeTime >= 1) {
+			updateGPUMemorySize();
+			__changeTime = now;
+		}
 		return __gpuMemorySize;
 	}
 
