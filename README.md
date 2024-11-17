@@ -7,3 +7,8 @@ You need to install the library first:
 ```shell
 haxelib git webgl-memory https://github.com/rainyt/webgl-memory
 ```
+
+Add to project.xml:
+```xml
+<haxelib name="webgl-memory" />
+```
