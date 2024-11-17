@@ -8,16 +8,19 @@ import cpp.vm.WeakRef;
 #end
 
 /**
- * GPU内存统计
+ * 适用于OpenLF的GPU内存统计
+ * GPU Memory Statistics for OpenLF
  */
 class GPUMemory {
 	/**
 	 * 位图引用关系
+	 * Bitmap reference relationship
 	 */
 	public static var bitmapDatas:Array<WeakRef<BitmapData>>;
 
 	/**
 	 * 观察位图引用关系
+	 * Observe bitmap reference relationships
 	 * @param bitmapData 
 	 */
 	public static function which(bitmapData:BitmapData):Void {
@@ -26,10 +29,12 @@ class GPUMemory {
 
 	/**
 	 * 获得GPU的内存大小
+	 * Get the memory size of the GPU
 	 * @return Int
 	 */
 	public static function getGPUMemorySize():Int {
 		var size:Int = 0;
+		bitmapDatas = bitmapDatas.filter(ref -> #if cpp ref.get() #else ref.deref() #end != null);
 		for (ref in bitmapDatas) {
 			var bitmapData:BitmapData = #if cpp ref.get() #else ref.deref() #end;
 			if (bitmapData != null) {
