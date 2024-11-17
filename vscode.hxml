@@ -1,4 +1,6 @@
 --class-path src
 --js bin/main.js
+--main Test
 --no-output
 --library lime
+--library openfl
