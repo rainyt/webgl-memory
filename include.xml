@@ -1,0 +1,4 @@
+<project>
+    <haxeflag name="--macro" value="addGlobalMetadata('openfl.display.BitmapData', '@:build(gpu.macro.BitmapDataMacro.build())')" />
+    <haxeflag name="--macro" value="addGlobalMetadata('openfl.display3D.Context3D', '@:build(gpu.macro.Context3DMacro.build())')" />
+</project>

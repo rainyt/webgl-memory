@@ -1,6 +1,8 @@
 --class-path src
 --js bin/main.js
 --main Test
---no-output
+# --no-output
 --library lime
 --library openfl
+--macro addGlobalMetadata('openfl.display.BitmapData', '@:build(gpu.macro.BitmapDataMacro.build())')
+--macro addGlobalMetadata('openfl.display3D.Context3D', '@:build(gpu.macro.Context3DMacro.build())')
