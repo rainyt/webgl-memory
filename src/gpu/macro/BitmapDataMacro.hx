@@ -23,6 +23,18 @@ class BitmapDataMacro {
 				}
 			}
 		}
+		// 追加一个纹理计算的方法
+		fields.push({
+			name: "getGPUMemory",
+			access: [ADynamic, APublic],
+			kind: FFun({
+				expr: macro {
+					return this.width * this.height * 4;
+				},
+				args: []
+			}),
+			pos: Context.currentPos()
+		});
 		return fields;
 	}
 }

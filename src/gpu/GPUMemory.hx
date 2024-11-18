@@ -25,8 +25,14 @@ class GPUMemory {
 	 */
 	private static var __gpuMemorySize:Int = 0;
 
+	/**
+	 * 是否支持弱引用
+	 */
 	private static var __isSupport:Null<Bool> = null;
 
+	/**
+	 * 是否初始化
+	 */
 	private static var __init = false;
 
 	/**
@@ -106,7 +112,7 @@ class GPUMemory {
 		for (ref in bitmapDatas) {
 			var bitmapData:BitmapData = #if cpp ref.get() #else ref.deref() #end;
 			if (bitmapData != null && @:privateAccess bitmapData.__texture != null) {
-				size += bitmapData.width * bitmapData.height * 4;
+				size += bitmapData.getGPUMemory();
 			}
 		}
 		__gpuMemorySize = size;
