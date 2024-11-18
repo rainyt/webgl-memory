@@ -12,3 +12,9 @@ Add to project.xml:
 ```xml
 <haxelib name="webgl-memory" />
 ```
+
+Read the GPU memory usage:
+```haxe
+var gpuMemory = this.stage.context3D.totalGPUMemory;
+trace('GPU Memory: $gpuMemory');
+```
