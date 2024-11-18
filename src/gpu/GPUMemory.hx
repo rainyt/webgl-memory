@@ -3,6 +3,7 @@ package gpu;
 import haxe.Timer;
 import openfl.display.BitmapData;
 #if js
+import haxe.Exception;
 import js.lib.WeakRef;
 #elseif cpp
 import cpp.vm.WeakRef;
@@ -24,7 +25,36 @@ class GPUMemory {
 	 */
 	private static var __gpuMemorySize:Int = 0;
 
-	private static var __changeTime:Float = 0;
+	private static var __isSupport:Null<Bool> = null;
+
+	private static var __init = false;
+
+	/**
+	 * 是否自动更新内存大小
+	 * Whether to automatically update memory size
+	 */
+	public static var autoUpdateMemorySize:Bool = true;
+
+	/**
+	 * 判断是否支持当前API
+	 * @return Bool
+	 */
+	public static function isSupport():Bool {
+		if (__isSupport != null)
+			return __isSupport;
+		#if js
+		try {
+			new WeakRef({});
+			__isSupport = true;
+		} catch (e:Exception) {
+			trace("[WeakRef] Not support:", e);
+			__isSupport = false;
+		}
+		#else
+		__isSupport = true;
+		#end
+		return __isSupport;
+	}
 
 	/**
 	 * 观察位图引用关系
@@ -32,8 +62,26 @@ class GPUMemory {
 	 * @param bitmapData 
 	 */
 	public static function which(bitmapData:BitmapData):Void {
-		bitmapDatas.push(new WeakRef(bitmapData));
-		updateGPUMemorySize();
+		if (isSupport()) {
+			bitmapDatas.push(new WeakRef(bitmapData));
+			updateGPUMemorySize();
+			if (!__init) {
+				__init = true;
+				run();
+			}
+		}
+	}
+
+	/**
+	 * 每3秒更新一次
+	 */
+	private static function run():Void {
+		if (!autoUpdateMemorySize)
+			return;
+		Timer.delay(() -> {
+			updateGPUMemorySize();
+			run();
+		}, 3000);
 	}
 
 	/**
@@ -42,11 +90,8 @@ class GPUMemory {
 	 * @return Int
 	 */
 	public static function getGPUMemorySize():Int {
-		var now = Timer.stamp();
-		if (now - __changeTime >= 1) {
-			updateGPUMemorySize();
-			__changeTime = now;
-		}
+		if (!isSupport())
+			return 0;
 		return __gpuMemorySize;
 	}
 
@@ -54,6 +99,8 @@ class GPUMemory {
 	 * 更新GPU内存大小
 	 */
 	public static function updateGPUMemorySize():Void {
+		if (!isSupport())
+			return;
 		var size:Int = 0;
 		bitmapDatas = bitmapDatas.filter(ref -> #if cpp ref.get() #else ref.deref() #end != null);
 		for (ref in bitmapDatas) {
@@ -70,6 +117,8 @@ class GPUMemory {
 	 * @return Array<BitmapData>
 	 */
 	public static function getBitmapDatas():Array<BitmapData> {
+		if (!isSupport())
+			return null;
 		bitmapDatas = bitmapDatas.filter(ref -> #if cpp ref.get() #else ref.deref() #end != null);
 		var array = [];
 		for (ref in bitmapDatas) {
