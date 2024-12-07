@@ -49,11 +49,10 @@ class GPUMemory {
 		if (__isSupport != null)
 			return __isSupport;
 		#if js
-		try {
-			new WeakRef({});
+		if (untyped window.WeakRef != null) {
 			__isSupport = true;
-		} catch (e:Exception) {
-			trace("[WeakRef] Not support:", e);
+		} else {
+			trace("[WeakRef] Not support.");
 			__isSupport = false;
 		}
 		#else
